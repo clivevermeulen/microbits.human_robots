@@ -31,25 +31,13 @@ radio.onDataPacketReceived( ({ receivedNumber }) =>  {
     }
     show_send_instruction()
 })
-input.onGesture(Gesture.Shake, () => {
-    if (mode < 4) {
+input.onPinPressed(TouchPin.P1, () => {
+    if (mode < 3) {
         mode = mode + 1
     } else {
         mode = 1
     }
-    if (mode == 1) {
-        basic.showIcon(IconNames.Square)
-    } else if (mode == 2) {
-        basic.showIcon(IconNames.Triangle)
-    } else if (mode == 3) {
-        basic.showLeds(`
-            . . . . .
-            # # # # #
-            . # . # .
-            . . # . .
-            . . . . .
-            `)
-    }
+    show_mode()
 })
 function show_send_instruction()  {
     if (send_instruction == 1) {
@@ -93,7 +81,34 @@ function show_send_instruction()  {
 function show_radio_group()  {
     basic.showString("" + radio_group + "")
 }
+function show_mode()  {
+    if (mode == 1) {
+        basic.showLeds(`
+            # . . . #
+            . . # . .
+            . # . # .
+            . . # . .
+            # . . . #
+            `)
+    } else if (mode == 2) {
+        basic.showLeds(`
+            . . # . .
+            . # . # .
+            # # # # #
+            . . . . .
+            # # # # #
+            `)
+    } else if (mode == 3) {
+        basic.showLeds(`
+            # # # # #
+            . # . # .
+            . . # . .
+            . . . . .
+            # # # # #
+            `)
+    }
+}
 mode = 1
 send_instruction = 4
 radio_group = 0
-basic.showIcon(IconNames.Square)
+show_mode()
