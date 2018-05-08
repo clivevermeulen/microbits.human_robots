@@ -1,16 +1,18 @@
 let radio_group = 0
 let send_instruction = 0
+let set_radio_group = 0
 let mode = 0
 input.onButtonPressed(Button.B, () => {
     if (mode == 1) {
-        radio.setGroup(radio_group)
+        set_radio_group = radio_group
+        radio.setGroup(set_radio_group)
     } else if (mode == 2) {
         radio.sendNumber(send_instruction)
     }
 })
 input.onButtonPressed(Button.A, () => {
     if (mode == 1) {
-        if (radio_group < 30) {
+        if (radio_group < 10) {
             radio_group = radio_group + 1
         } else {
             radio_group = 1
@@ -51,26 +53,26 @@ function show_send_instruction()  {
     } else if (send_instruction == 2) {
         basic.showLeds(`
             . . # . .
-            . . . # .
+            . # . . .
             # # # # #
-            . . . # .
+            . # . . .
             . . # . .
             `)
     } else if (send_instruction == 3) {
         basic.showLeds(`
             . . # . .
-            . . # . .
-            # . # . #
-            . # # # .
+            . . . # .
+            # # # # #
+            . . . # .
             . . # . .
             `)
     } else if (send_instruction == 4) {
         basic.showLeds(`
-            . . # . .
-            . # . . .
-            # # # # #
-            . # . . .
-            . . # . .
+            . # # . .
+            # . . # .
+            # . . # .
+            # . # # #
+            # . . # .
             `)
     }
     if (mode == 3) {
@@ -79,10 +81,13 @@ function show_send_instruction()  {
     }
 }
 function show_radio_group()  {
-    basic.showString("" + radio_group + "")
+    if (radio_group > 0) {
+        basic.showString("" + radio_group + "")
+    }
 }
 function show_mode()  {
     if (mode == 1) {
+        radio_group = set_radio_group
         basic.showLeds(`
             # . . . #
             . . # . .
@@ -90,6 +95,8 @@ function show_mode()  {
             . . # . .
             # . . . #
             `)
+        basic.pause(500)
+        show_radio_group()
     } else if (mode == 2) {
         basic.showLeds(`
             . . # . .
